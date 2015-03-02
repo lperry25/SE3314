@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="small-10 small-centered columns">
+        <table>
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>OpenPrice</th>
+                    <th>CurrentPrice</th>
+                    <th>Change Value</th>
+                    <th>TEST</th>
+                    <th>Change %</th>
+                    <th>Share Volume</th>
+                    <th>TEST</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each item in model}}
+                    <tr>
+                        <td>{{item.company}}</td>
+                        <td>{{item.openPrice}}</td>
+                        <td>{{item.currentPrice}}</td>
+                        <td>{{item.changeValue}}</td>
+                        <td>TEST</td>
+                        <td>{{item.changePercent}}</td>
+                        <td>{{item.shareVolume}}</td>
+                        <td>TEST</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

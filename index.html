@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SE3314B Stock Market</title>
+
+    <link rel="stylesheet" href="CSS/foundation.min.css">
+
+    <script src="libs/jquery-1.11.2.min.js"></script>
+    <script src="libs/handlebars-v2.0.0.js"></script>
+    <script src="libs/ember.js"></script>
+    <script src="libs/ember-data-1.0.0-beta.8.js"></script>
+    <script src="libs/ember-handlebars-loader-0.0.1.js"></script>
+
+    <script src="stockApp.js"></script>
+    <script src="router.js"></script>
+
+
+    <script src="models/stocksStateSummary.js"></script>
+    <script src="data.js"></script>
+
+    <script src="routes/stocksStateSummary.js"></script>
+
+    <script>
+        EmberHandlebarsLoader.loadTemplates([
+            'marketByOrder', 'marketByPrice','placeBidOrder', 'placeSellOrder', 'stocksStateSummary',"symbol"
+        ]);
+    </script>
+
+</head>
+<body>
+    <div class="row">
+        <div class="small-10 small-centered columns">
+            <h1>SE3314b Web-based Stock Application</h1>
+        </div>
+        <div class="small-6 small-centered columns">
+            <img src="se3310.png" alt="Course Logo">
+        </div>
+    </div>
+</body>
+</html>
