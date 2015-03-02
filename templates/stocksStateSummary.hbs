@@ -3,14 +3,12 @@
         <table>
             <thead>
                 <tr>
-                    <th>Company</th>
-                    <th>OpenPrice</th>
-                    <th>CurrentPrice</th>
-                    <th>Change Value</th>
-                    <th>TEST</th>
-                    <th>Change %</th>
-                    <th>Share Volume</th>
-                    <th>TEST</th>
+                    <th align="center">Company</th>
+                    <th align="center">Open Price</th>
+                    <th align="center">Current Price</th>
+                    <th align="center">Change <br>Value - %</th>
+                    <th align="center">Share Volume</th>
+                    <th align="center">TEST</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,9 +17,7 @@
                         <td>{{item.company}}</td>
                         <td>{{item.openPrice}}</td>
                         <td>{{item.currentPrice}}</td>
-                        <td>{{item.changeValue}}</td>
-                        <td>TEST</td>
-                        <td>{{item.changePercent}}</td>
+                        <td>{{item.changeValue}} TEST {{item.changePercent}}</td>
                         <td>{{item.shareVolume}}</td>
                         <td>TEST</td>
                     </tr>
