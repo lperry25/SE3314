@@ -14,7 +14,7 @@
             <tbody>
                 {{#each item in model}}
                     <tr>
-                        <td>{{#link-to 'companyInfo'}}{{item.company}}{{action 'displayCompany'}}{{/link-to}}</td>
+                        <td><a href='#' {{action 'displayCompany' item.id}}>{{item.company}}</a></td>
                         <td>{{item.openPrice}}</td>
                         <td>{{item.currentPrice}}</td>
                         <td>{{item.changeValue}} <img {{bind-attr src=item.changeSymbol}}> {{item.changePercent}}</td>
@@ -25,4 +25,20 @@
             </tbody>
         </table>
     </div>
+
+
+        <!--<div class="small-6 small-text-center columns">-->
+
+        <!--</div>-->
+        <!--<div class="small-6 small-text-center columns">-->
+
+        <!--</div>-->
+        <!--<div class="small-6 small-text-center columns">-->
+
+        <!--</div>-->
+
+    {{outlet 'marketByOrder'}}
+    {{outlet 'marketByPrice'}}
+    {{outlet 'symbol'}}
+
 </div>

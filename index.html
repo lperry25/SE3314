@@ -19,10 +19,17 @@
     <script src="data.js"></script>
 
     <script src="routes/stocksStateSummary.js"></script>
+    <script src="routes/marketByOrder.js"></script>
+    <script src="routes/marketByPrice.js"></script>
+    <script src="routes/symbol.js"></script>
+
+    <script src="controllers/placeBidOrder.js"></script>
+    <script src="controllers/placeSellOrder.js"></script>
+    <script src="controllers/stocksStateSummary.js"></script>
 
     <script>
         EmberHandlebarsLoader.loadTemplates([
-            'marketByOrder', 'marketByPrice','placeBidOrder', 'placeSellOrder', 'stocksStateSummary',"symbol","companyInfo"
+            'marketByOrder', 'marketByPrice','placeBidOrder', 'placeSellOrder', 'stocksStateSummary',"symbol"
         ]);
     </script>
 
