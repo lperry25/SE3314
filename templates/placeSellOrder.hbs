@@ -1,6 +1,16 @@
 <div class="row">
     <div class="small-10 small-centered columns">
-        <h1>Place Sell Order for</h1>
-        <h1>Company Name</h1>
+        <h3>Place Sell Order for</h3>
+        <h3>Company Name</h3>
+        <ul class="small-block-grid-3">
+            <il><h4>Number of Shares</h4><input class = "text"></il>
+            <il><h4>Sale Price</h4><input class = "text"></il>
+            <il><img src = 'images/apple.png'></il>
+        </ul>
+    </div>
+    </div>
+    <div class ="small-6 columns">
+        {{#link-to 'stockStateSummary'}}<button>Submit</button>{{/link-to}}
+        {{#link-to 'stockStateSummary'}}<button>Cancel</button>{{/link-to}}
     </div>
 </div>

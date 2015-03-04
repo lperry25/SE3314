@@ -4,15 +4,17 @@
 StockApp.Router.map(function() {
     this.resource('stocksStateSummary', {path: '/'});
     this.resource('companyInfo');
-    this.resource('marketByOrder');
+/*    this.resource('marketByOrder');
     this.resource('marketByPrice');
     this.resource('symbol');
-    this.resource('placeBidOrder',{path:'/bid'});
+  */  this.resource('placeBidOrder',{path:'/bid'});
     this.resource('placeSellOrder',{path: '/sell'});
- /*   this.resource('about');
-    this.resource('contact', function(){
-        this.resource('phone');
-        this.resource('email');
-    });
-    */
+});
+
+StockApp.PostsRoute = Ember.Route.extend({
+    renderTemplate: function() {
+        this.render('marketByOrder');
+        this.render('marketByPrice');
+        this.render('symbol');
+    }
 });
