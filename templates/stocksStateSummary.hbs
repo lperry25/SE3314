@@ -8,18 +8,18 @@
                     <th align="center">Current Price</th>
                     <th align="center">Change <br>Value - %</th>
                     <th align="center">Share Volume</th>
-                    <th align="center">TEST</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {{#each item in model}}
                     <tr>
-                        <td>{{item.company}}</td>
+                        <td>{{#link-to 'companyInfo'}}{{item.company}}{{/link-to}}</td>
                         <td>{{item.openPrice}}</td>
                         <td>{{item.currentPrice}}</td>
-                        <td>{{item.changeValue}} TEST {{item.changePercent}}</td>
+                        <td>{{item.changeValue}} <img {{bind-attr src=item.changeSymbol}}> {{item.changePercent}}</td>
                         <td>{{item.shareVolume}}</td>
-                        <td>TEST</td>
+                        <td>{{#link-to 'placeBidOrder'}}<button>Buy</button>{{/link-to}}{{#link-to 'placeSellOrder'}}<button>Sell</button>{{/link-to}}</td>
                     </tr>
                 {{/each}}
             </tbody>

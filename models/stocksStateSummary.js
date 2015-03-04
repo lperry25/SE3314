@@ -6,6 +6,8 @@ StockApp.StocksStateSummary = DS.Model.extend({
     openPrice: DS.attr(),
     currentPrice: DS.attr(),
     changeValue: DS.attr(),
+    changeSymbol: DS.attr(),
     changePercent: DS.attr(),
-    shareVolume: DS.attr()
+    shareVolume: DS.attr(),
+    companyLogo: DS.attr()
 });
