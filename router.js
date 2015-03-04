@@ -3,14 +3,15 @@
  */
 StockApp.Router.map(function() {
     this.resource('stocksStateSummary', {path: '/'});
-    this.resource('companyInfo');
-/*    this.resource('marketByOrder');
-    this.resource('marketByPrice');
-    this.resource('symbol');
-  */  this.resource('placeBidOrder',{path:'/bid'});
+    this.resource('companyInfo', function(){
+        this.resource('marketByOrder');
+        this.resource('marketByPrice');
+        this.resource('symbol');
+    });
+    this.resource('placeBidOrder',{path:'/bid'});
     this.resource('placeSellOrder',{path: '/sell'});
 });
-
+/*
 StockApp.PostsRoute = Ember.Route.extend({
     renderTemplate: function() {
         this.render('marketByOrder');
@@ -18,3 +19,4 @@ StockApp.PostsRoute = Ember.Route.extend({
         this.render('symbol');
     }
 });
+    */
