@@ -3,8 +3,8 @@ StockApp.Router.map(function() {
         this.resource('marketByOrder');
         this.resource('marketByPrice');
         this.resource('symbol');
-        this.resource('companyInfo');
+        this.resource('companyInfo', {path: '/:id'});
     });
-    this.resource('placeBidOrder',{path:'/bid'});
-    this.resource('placeSellOrder',{path: '/sell'});
+    this.resource('placeBidOrder',{path:'/bid/:id'});
+    this.resource('placeSellOrder',{path: '/sell/:id'});
 });

@@ -1,4 +1,4 @@
-StockApp.StocksStateSummaryController =Ember.Controller.extend({
+StockApp.StocksStateSummaryController = Ember.Controller.extend({
     displayedCompany: false,
 
     actions: {
