@@ -5,6 +5,12 @@ StockApp.Company = DS.Model.extend({
 
     currentPrice: DS.attr('number', {defaultValue: 0}),
 
+    //changeValue: DS.attr(),
+    //
+    //changeSymbol: DS.attr(),
+    //
+    //changePercent: DS.attr(),
+
     changeValue: function() {
         if (this.get('currentPrice') != 0) {
             return this.get('currentPrice') - this.get('openPrice');
@@ -32,9 +38,9 @@ StockApp.Company = DS.Model.extend({
 
     shareVolume: DS.attr('number', {defaultValue: 0}),
 
-    companyLogo: DS.attr()
+    companyLogo: DS.attr(),
 
-    //buyOrders: DS.hasMany('buyOrder'),
-    //
-    //sellOrders: DS.hasMany('sellOrder')
+    buyOrders: DS.hasMany('buyOrder', { async: true }),
+
+    sellOrders: DS.hasMany('sellOrder', { async: true })
 });

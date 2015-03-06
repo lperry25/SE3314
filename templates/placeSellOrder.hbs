@@ -6,16 +6,16 @@
             <il><h4>Number of Shares</h4>
                 {{ input
                     type="text"
-                    value=shares}}
+                    value=shares}}</il>
             <il><h4>Sale Price</h4>
                 {{ input
                     type="text"
-                    value=price}}
+                    value=price}}</il>
             <il><img {{bind-attr src=model.companyLogo}}></il>
         </ul>
     </div>
     <div class ="small-6 columns">
-        {{#link-to 'stocksStateSummary'}}<button {{action 'submit'}}>Submit</button>{{/link-to}}
+        <button {{action 'submit'}}>Submit</button>
         {{#link-to 'stocksStateSummary'}}<button>Cancel</button>{{/link-to}}
     </div>
 </div>

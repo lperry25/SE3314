@@ -15,6 +15,12 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
 
             // Save the new model
             sellOrder.save();
+
+            // clear the text fields
+            this.set('shares', '');
+            this.set('price', '');
+
+            this.transitionTo('stocksStateSummary');
         }
     }
 });

@@ -3,13 +3,19 @@
         <h3>Place Bid Order for</h3>
         <h3>{{model.name}}</h3>
         <ul class="small-block-grid-3">
-            <il><h4>Number of Shares</h4><input class = "text"></il>
-            <il><h4>Bid Price</h4><input class = "text"></il>
+            <il><h4>Number of Shares</h4>
+                {{ input
+                type="text"
+                value=shares}}</il>
+            <il><h4>Bid Price</h4>
+                {{ input
+                type="text"
+                value=price}}</il>
             <il><img {{bind-attr src=model.companyLogo}}></il>
         </ul>
     </div>
     <div class ="small-6 columns">
-        {{#link-to 'stocksStateSummary'}}<button {{action 'submit'}}>Submit</button>{{/link-to}}
+        <button {{action 'submit'}}>Submit</button>
         {{#link-to 'stocksStateSummary'}}<button>Cancel</button>{{/link-to}}
     </div>
 </div>
