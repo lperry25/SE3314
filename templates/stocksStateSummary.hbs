@@ -1,5 +1,24 @@
 <div class="row">
-    <div class="small-10 small-centered columns">
+    <div class="small-12 small-centered columns">
+        <nav class="top-bar" data-topbar role="navigation">
+            <section class ="top-bar-section">
+                <ul class="left">
+                    <li class="name">
+                        <h1><a href=#">Most Active By Volume</a></h1>
+                    </li>
+                    <li class="name">
+                        <h1><a href="#">Gainers</a></h1>
+                    </li>
+                    <li class="name">
+                        <h1><a href="#">Losers</a></h1>
+                    </li>
+                </ul>
+            </section>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 small-centered columns">
         <table>
             <thead>
                 <tr>
@@ -27,8 +46,16 @@
     </div>
 
     <div>
-        {{outlet "marketByOrder"}}
-        {{outlet "marketByPrice"}}
-        {{outlet "symbol"}}
+        <ul class = "small-block-grid-3">
+            <li>
+                {{outlet "marketByOrder"}}
+            </li>
+            <li>
+                {{outlet "marketByPrice"}}
+            </li>
+            <li>
+                {{outlet "symbol"}}
+            </li>
+        </ul>
     </div>
 </div>
