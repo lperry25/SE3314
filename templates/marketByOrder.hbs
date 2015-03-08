@@ -16,6 +16,17 @@
                 <td>Volume</td>
             </tr>
             </thead>
+            <tbody>
+                {{#each item in sortedMarketByOrder}}
+                    <tr>
+                        {{#each element in item}}
+                            <td>
+                                {{element}}
+                            </td>
+                        {{/each}}
+                    </tr>
+                {{/each}}
+            </tbody>
         </table>
     </div>
 </div>
