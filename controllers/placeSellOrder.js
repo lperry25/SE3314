@@ -5,6 +5,7 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
             var shares = this.get('shares');
             var price = this.get('price');
             var model = this.get('model');
+            var store = this.store;
 
             console.log("inside PlaceSellOrderController submit, shares: "+shares+", price: "+price);
 
@@ -32,9 +33,8 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
                         console.log('sell order - numb shares equal to buy order');
 
                         // delete the buy order
-                        this.store.find('buyOrder', buyOrders[i].get('id')).then(function (order) {
-                            order.deleteRecord();
-                            order.save();
+                        store.find('buyOrder', buyOrders[i].get('id')).then(function (order) {
+                            store.deleteRecord(order);
                         });
 
                         // set shares for sell order to 0 (all sold)
@@ -50,9 +50,8 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
                         shares = shares - buyOrders[i].get('numberShares');
 
                         // delete the buy order
-                        this.store.find('buyOrder', buyOrders[i].get('id')).then(function(order) {
-                            order.deleteRecord();
-                            order.save();
+                        store.find('buyOrder', buyOrders[i].get('id')).then(function(order) {
+                            store.deleteRecord(order);
                         });
                     }
                 }
@@ -60,7 +59,7 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
 
             if (shares > 0) {
                 // Create the new sellOrder record (only if all shares not sold)
-                var sellOrder = this.store.createRecord('sellOrder', {
+                var sellOrder = store.createRecord('sellOrder', {
                     numberShares: shares,
                     salePrice: price,
                     company: model
@@ -70,6 +69,14 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
                 sellOrder.save();
             }
 
+            // clear the text fields
+            this.set('shares', '');
+            this.set('price', '');
+
+            this.transitionTo('stocksStateSummary');
+        },
+
+        cancel: function() {
             // clear the text fields
             this.set('shares', '');
             this.set('price', '');

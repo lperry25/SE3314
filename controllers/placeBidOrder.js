@@ -34,6 +34,7 @@ StockApp.PlaceBidOrderController = Ember.Controller.extend({
                         // delete the sell order
                         this.store.find('sellOrder', sellOrders[i].get('id')).then(function (order) {
                             order.deleteRecord();
+                            order.get('isDeleted');
                             order.save();
                         });
 
@@ -52,6 +53,7 @@ StockApp.PlaceBidOrderController = Ember.Controller.extend({
                         // delete the buy order
                         this.store.find('sellOrder', sellOrders[i].get('id')).then(function(order) {
                             order.deleteRecord();
+                            order.get('isDeleted');
                             order.save();
                         });
                     }
@@ -70,6 +72,14 @@ StockApp.PlaceBidOrderController = Ember.Controller.extend({
                 buyOrder.save();
             }
 
+            // clear the text fields
+            this.set('shares', '');
+            this.set('price', '');
+
+            this.transitionTo('stocksStateSummary');
+        },
+
+        cancel: function() {
             // clear the text fields
             this.set('shares', '');
             this.set('price', '');
