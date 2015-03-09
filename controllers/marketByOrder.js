@@ -16,18 +16,6 @@ StockApp.MarketByOrderController = Ember.ArrayController.extend({
         for (var i = 0; i < size; i++)
             sortedOrders[i] = new Array('', '', '', '');
 
-        //for (var i = 0; i < size; i++) {
-        //    if (i < buyOrders.length) {
-        //        sortedOrders[i][0] = String(buyOrders[i].get('numberShares'));
-        //        sortedOrders[i][1] = String(buyOrders[i].get('purchasePrice'));
-        //    }
-        //    if (i < sellOrders.length) {
-        //        sortedOrders[i][2] = String(sellOrders[i].get('numberShares'));
-        //        sortedOrders[i][3] = String(sellOrders[i].get('salePrice'));
-        //    }
-        //}
-
-
         for (var i = 0; i< buyOrders.length; i++)
         {
             sortedBuyOrders[i] = new Array(String(buyOrders[i].get('numberShares')),String(buyOrders[i].get('purchasePrice')));
@@ -37,18 +25,6 @@ StockApp.MarketByOrderController = Ember.ArrayController.extend({
         {
             sortedSellOrders[i] = new Array(String(sellOrders[i].get('salePrice')),String(sellOrders[i].get('numberShares')));
         }
-
-        //sortedBuyOrders.sort(function(a, b){
-        //    if(a.get('purchasePrice') > b.get('purchasePrice')) return 1;
-        //    if(a.get('purchasePrice') < b.get('purchasePrice')) return -1;
-        //    return 0;
-        //})
-        //
-        //sortedSellOrders.sort(function(a, b){
-        //    if(a.get('salePrice') < b.get('salePrice')) return 1;
-        //    if(a.get('salePrice') > b.get('salePrice')) return -1;
-        //    return 0;
-        //});
 
         sortedBuyOrders.reverse();
         sortedSellOrders.reverse();

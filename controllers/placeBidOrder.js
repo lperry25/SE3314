@@ -5,6 +5,7 @@ StockApp.PlaceBidOrderController = Ember.Controller.extend({
             var shares = this.get('shares');
             var price = this.get('price');
             var model = this.get('model');
+            var sharesBought = 0;
 
             console.log("inside PlaceBidOrderController submit, shares: "+shares+", price: "+price);
 
@@ -23,6 +24,7 @@ StockApp.PlaceBidOrderController = Ember.Controller.extend({
                         sellOrders[i].set('numberShares', sellOrders[i].get('numberShares') - shares);
 
                         // set shares for bid order to 0 (all bought)
+                        sharesBought += shares;
                         shares = 0;
 
                         // no more transactions to make
@@ -39,6 +41,7 @@ StockApp.PlaceBidOrderController = Ember.Controller.extend({
                         });
 
                         // set shares for bid order to 0 (all bought)
+                        sharesBought += shares;
                         shares = 0;
 
                         // no more transactions to make
@@ -47,7 +50,8 @@ StockApp.PlaceBidOrderController = Ember.Controller.extend({
                     else if (sellOrders[i].get('numberShares') < shares) {
                         console.log('bid order - numb shares greater than sell order');
 
-                        // adjusts the number of shares to reflect number sold
+                        // adjusts the share volume variable and number of shares to reflect number sold
+                        sharesBought += sellOrders[i].get('numberShares');
                         shares = shares - sellOrders[i].get('numberShares');
 
                         // delete the buy order
@@ -59,6 +63,9 @@ StockApp.PlaceBidOrderController = Ember.Controller.extend({
                     }
                 }
             }
+
+            // update company shares volume
+            model.set('shareVolume', parseInt(model.get('shareVolume') + parseInt(sharesBought)));
 
             if (shares > 0) {
                 // Create the new buyOrder record (only if all shares not bought)

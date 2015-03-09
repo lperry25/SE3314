@@ -6,6 +6,7 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
             var price = this.get('price');
             var model = this.get('model');
             var store = this.store;
+            var sharesSold = 0;
 
             console.log("inside PlaceSellOrderController submit, shares: "+shares+", price: "+price);
 
@@ -24,6 +25,7 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
                         buyOrders[i].set('numberShares', buyOrders[i].get('numberShares') - shares);
 
                         // set shares for sell order to 0 (all sold)
+                        sharesSold += shares;
                         shares = 0;
 
                         // no more transactions to make
@@ -38,6 +40,7 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
                         });
 
                         // set shares for sell order to 0 (all sold)
+                        sharesSold += shares;
                         shares = 0;
 
                         // no more transactions to make
@@ -46,7 +49,8 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
                     else if (buyOrders[i].get('numberShares') < shares) {
                         console.log('sell order - numb shares greater than buy order');
 
-                        // adjusts the number of shares to reflect number sold
+                        // adjusts the share volume variable and number of shares to reflect number sold
+                        sharesSold += buyOrders[i].get('numberShares');
                         shares = shares - buyOrders[i].get('numberShares');
 
                         // delete the buy order
@@ -56,6 +60,9 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
                     }
                 }
             }
+
+            // update company shares sold
+            model.set('shareVolume', parseInt(model.get('shareVolume') + parseInt(sharesSold)));
 
             if (shares > 0) {
                 // Create the new sellOrder record (only if all shares not sold)
