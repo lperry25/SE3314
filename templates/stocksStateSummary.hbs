@@ -4,13 +4,13 @@
             <section class ="top-bar-section">
                 <ul class="left">
                     <li class="name">
-                        <h1><a href=#">Most Active By Volume</a></h1>
+                        <h1><a href="#" {{action 'sortBy' 'shareVolume:desc'}}>Most Active By Volume</a></h1>
                     </li>
                     <li class="name">
-                        <h1><a href="#">Gainers</a></h1>
+                        <h1><a href="#" {{action 'displayGainers'}}>Gainers</a></h1>
                     </li>
                     <li class="name">
-                        <h1><a href="#">Losers</a></h1>
+                        <h1><a href="#" {{action 'displayLosers'}}>Losers</a></h1>
                     </li>
                 </ul>
             </section>
@@ -37,7 +37,7 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each item in model}}
+                {{#each item in sortedCompanies}}
                     <tr>
                         <td>{{#link-to 'companyInfo' item.id}}{{item.name}}{{/link-to}}</td>
                         <td>{{item.openPrice}}</td>

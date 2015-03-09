@@ -1,15 +1,38 @@
 StockApp.StocksStateSummaryController = Ember.ArrayController.extend({
-    item: 'stocksStateSummaryItem',
+    //item: 'stocksStateSummaryItem',
 
-    sortCompanyCriteria: [],
+    sortCriteria: [],
     sortedCompanies: Ember.computed.sort('model','sortCriteria'),
 
     actions: {
-        // set sort property
+        sortBy: function(criteria) {
+            console.log('in sortBy.. ');
+            // set model and criteria to sort
+            this.set('model', this.store.find('company'));
+            this.set('sortCriteria', [criteria]);
+        },
+        displayGainers: function() {
+            console.log('in displayGainers.. ');
+            var controller = this;
+            this.store.find('company').then(function(companies) {
+                // set model and call sort by
+                controller.set('model', companies.filterBy('changeSymbol', "images/up.png").sortBy('changePercent:desc'));
+                controller.set('sortCriteria', ['changePercent:desc']);
+            });
+        },
+        displayLosers: function() {
+            console.log('in displayLosers.. ');
+            var controller = this;
+            this.store.find('company').then(function(companies) {
+                // set model and call sort by
+                controller.set('model', companies.filterBy('changeSymbol', "images/down.png").sortBy('changePercent:desc'));
+                controller.set('sortCriteria', ['changePercent:desc']);
+            });
+        }
     }
 });
 
-StockApp.StocksStateSummaryItemController = Ember.ObjectController.extend({
+//StockApp.StocksStateSummaryItemController = Ember.ObjectController.extend({
 
     //changeValue: function() {
     //    if (this.get('currentPrice') != 0) {
@@ -35,5 +58,5 @@ StockApp.StocksStateSummaryItemController = Ember.ObjectController.extend({
     //changePercent: function() {
     //    return Math.abs(this.get('changeValue'))/this.get('openPrice');
     //}.property('changeValue', 'openPrice')
-});
+//});
 
