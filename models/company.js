@@ -13,7 +13,10 @@ StockApp.Company = DS.Model.extend({
 
     changeValue: function() {
         if (this.get('currentPrice') != 0) {
-            return this.get('currentPrice') - this.get('openPrice');
+            var changeVal = this.get('currentPrice') - this.get('openPrice');
+            changeVal = changeVal.toFixed(2);
+            return changeVal;
+         //   return this.get('currentPrice') - this.get('openPrice');
         }
         else {
             return 0.00;
@@ -33,7 +36,10 @@ StockApp.Company = DS.Model.extend({
     }.property('changeValue'),
 
     changePercent: function() {
-        return Math.abs(this.get('changeValue'))/this.get('openPrice');
+        var changePerc = Math.abs(this.get('changeValue'))/this.get('openPrice');
+        changePerc = changePerc.toFixed(2);
+        return changePerc;
+    //    return Math.abs(this.get('changeValue'))/this.get('openPrice');
     }.property('changeValue', 'openPrice'),
 
     shareVolume: DS.attr('number', {defaultValue: 0}),
