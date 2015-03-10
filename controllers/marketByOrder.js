@@ -1,6 +1,6 @@
 StockApp.MarketByOrderController = Ember.ArrayController.extend({
 
-    needs:['companyInfo'],
+    needs:['companyInfo','placeBidOrder'],
     sortedMarketByOrder: function() {
         var companyData = this.get('controllers.companyInfo.model');
         var buyOrders = companyData.get('buyOrders').sortBy('buyOrder.price');
@@ -51,5 +51,5 @@ StockApp.MarketByOrderController = Ember.ArrayController.extend({
             }
         }
         return sortedOrders;
-    }.property('controllers.companyInfo.model.buyOrders','controllers.companyInfo.model.sellOrders')
+    }.property('controllers.placeBidOrder.model.shareVolume','controllers.companyInfo.model.buyOrders','controllers.companyInfo.model.sellOrders')
 });
