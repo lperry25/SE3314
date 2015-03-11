@@ -99,7 +99,7 @@ StockApp.MarketByPriceController = Ember.ArrayController.extend({
                     index++;
                 }
         }
-        
+
         //populate sortedOrders array and fill with sell orders
         index = 0;
         i=0;

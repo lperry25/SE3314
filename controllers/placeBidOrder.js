@@ -14,9 +14,9 @@ StockApp.PlaceBidOrderController = Ember.Controller.extend({
             //code added by Laura for the sort
             //function to sort sell orders
             var compareSell = function(a, b) {
-                if (parseFloat(a[0]) < parseFloat(b[0]))
+                if (parseFloat(a[1]) < parseFloat(b[1]))
                     return -1;
-                if (parseFloat(a[0]) > parseFloat(b[0]))
+                if (parseFloat(a[1]) > parseFloat(b[1]))
                     return 1;
                 return 0;
             }
