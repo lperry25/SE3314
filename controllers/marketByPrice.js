@@ -110,7 +110,7 @@ StockApp.MarketByPriceController = Ember.ArrayController.extend({
                 if (sortedSellOrders[i][0] == sortedSellOrders[i-1][0])
                 {
                     index--;
-                    totalVolume = parseFloat(totalVolume) + parseFloat(sortedSellOrders[i][0]);
+                    totalVolume = parseFloat(totalVolume) + parseFloat(sortedSellOrders[i][1]);
                     count ++;
                     sortedOrders[index][5] = count;
                     sortedOrders[index][4] = totalVolume;

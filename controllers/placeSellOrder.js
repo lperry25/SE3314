@@ -8,11 +8,8 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
             var store = this.store;
             var sharesSold = 0;
 
-            console.log("inside PlaceSellOrderController submit, shares: "+shares+", price: "+price);
-
             var buyOrders = model.get('buyOrders').sortBy('buyOrders.price:desc');
 
-            //code added by Laura for sorting
             //function to sort buy orders
             var compareBuy = function(a, b) {
                 if (parseFloat(a[1]) > parseFloat(b[1]))
@@ -22,7 +19,6 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
                 return 0;
             }
             buyOrders.sort(compareBuy);
-            //code added by Laura Over
 
             for (var i = 0; i < buyOrders.length; i++) {
                 // transaction if bidder willing to pay more than or as much as selling price
@@ -31,7 +27,6 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
 
                     // determine remaining number of shares left on each order and adjust/delete orders as necessary
                     if (buyOrders[i].get('numberShares') > shares) {
-                        console.log('sell order - numb shares less than buy order');
 
                         // subtract the shares sold from the buy order
                         buyOrders[i].set('numberShares', buyOrders[i].get('numberShares') - shares);
@@ -44,7 +39,6 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
                         break;
                     }
                     else if (buyOrders[i].get('numberShares') == shares) {
-                        console.log('sell order - numb shares equal to buy order');
 
                         // delete the buy order
                         store.find('buyOrder', buyOrders[i].get('id')).then(function (order) {
@@ -59,7 +53,6 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
                         break;
                     }
                     else if (buyOrders[i].get('numberShares') < shares) {
-                        console.log('sell order - numb shares greater than buy order');
 
                         // adjusts the share volume variable and number of shares to reflect number sold
                         sharesSold += buyOrders[i].get('numberShares');

@@ -5,12 +5,6 @@ StockApp.Company = DS.Model.extend({
 
     currentPrice: DS.attr('number', {defaultValue: 0}),
 
-    //changeValue: DS.attr(),
-    //
-    //changeSymbol: DS.attr(),
-    //
-    //changePercent: DS.attr(),
-
     changeValue: function() {
         if (this.get('currentPrice') != 0) {
             var changeVal = this.get('currentPrice') - this.get('openPrice');

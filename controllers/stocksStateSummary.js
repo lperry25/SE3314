@@ -5,13 +5,11 @@ StockApp.StocksStateSummaryController = Ember.ArrayController.extend({
 
     actions: {
         sortBy: function(criteria) {
-            console.log('in sortBy.. ');
             // set model and criteria to sort
             this.set('model', this.store.find('company'));
             this.set('sortCriteria', [criteria]);
         },
         displayGainers: function() {
-            console.log('in displayGainers.. ');
             var controller = this;
             this.store.find('company').then(function(companies) {
                 // set model and call sort by
@@ -20,7 +18,6 @@ StockApp.StocksStateSummaryController = Ember.ArrayController.extend({
             });
         },
         displayLosers: function() {
-            console.log('in displayLosers.. ');
             var controller = this;
             this.store.find('company').then(function(companies) {
                 // set model and call sort by
