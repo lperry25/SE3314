@@ -12,6 +12,18 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
 
             var buyOrders = model.get('buyOrders').sortBy('buyOrders.price:desc');
 
+            //code added by Laura for sorting
+            //function to sort buy orders
+            var compareBuy = function(a, b) {
+                if (parseFloat(a[1]) > parseFloat(b[1]))
+                    return -1;
+                if (parseFloat(a[1]) < parseFloat(b[1]))
+                    return 1;
+                return 0;
+            }
+            buyOrders.sort(compareBuy);
+            //code added by Laura Over
+
             for (var i = 0; i < buyOrders.length; i++) {
                 // transaction if bidder willing to pay more than or as much as selling price
                 if (buyOrders[i].get('purchasePrice') >= price) {

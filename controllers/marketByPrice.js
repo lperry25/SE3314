@@ -8,48 +8,60 @@ StockApp.MarketByPriceController = Ember.ArrayController.extend({
         var sortedSellOrders = new Array(new Array(sellOrders.length));
         var sortedBuyOrders = new Array(new Array(buyOrders.length));
 
-
+        //create an array of just the buy orders
+        //this array will be sorted after creation then added to sortedOrders
         for (var i = 0; i< buyOrders.length; i++)
         {
             sortedBuyOrders[i] = new Array(String(buyOrders[i].get('numberShares')),String(buyOrders[i].get('purchasePrice')));
         }
 
+        //create an array of just the sell orders
+        //this array will be sorted after creation then added to sortedOrders
         for (var i = 0; i< sellOrders.length; i++)
         {
             sortedSellOrders[i] = new Array(String(sellOrders[i].get('salePrice')),String(sellOrders[i].get('numberShares')));
         }
 
-        var compare = function(a, b) {
+        //reverse the buy and sell orders so the most recent is displayed first
+        sortedBuyOrders.reverse();
+        sortedSellOrders.reverse();
+
+        //function to sort buy orders
+        var compareBuy = function(a, b) {
             if (parseFloat(a[1]) > parseFloat(b[1]))
                 return -1;
             if (parseFloat(a[1]) < parseFloat(b[1]))
                 return 1;
             return 0;
         }
+        //function to sort sell orders
+        var compareSell = function(a, b) {
+            if (parseFloat(a[0]) < parseFloat(b[0]))
+                return -1;
+            if (parseFloat(a[0]) > parseFloat(b[0]))
+                return 1;
+            return 0;
+        }
 
-        sortedBuyOrders.reverse();
-        sortedSellOrders.reverse();
+        //sort the buy and sell order arrays
+        sortedBuyOrders.sort(compareBuy);
+        sortedSellOrders.sort(compareSell);
 
-        sortedBuyOrders.sort(compare);
-        sortedSellOrders.sort(compare);
-
-        sortedBuyOrders.sort(compare);
-        sortedSellOrders.sort(compare);
         var length = 10;
         var buySize = buyOrders.length;
         var sellSize =sellOrders.length;
 
+        //create a sortedOrders array to put all sell and bid orders into it
         var size = Math.max(buySize,sellSize);
         var sortedOrders = new Array(new Array(size));
-
         for (var i = 0; i < size; i++)
             sortedOrders[i] = new Array('', '', '', '','','');
 
+        //populate sortedOrders array and fill with bid orders
         var totalVolume = 0;
         var count = 0;
         var index =0;
         var i=0;
-
         while (index < buySize) {
                 if (i>0)
                 {
@@ -87,6 +99,8 @@ StockApp.MarketByPriceController = Ember.ArrayController.extend({
                     index++;
                 }
         }
+        
+        //populate sortedOrders array and fill with sell orders
         index = 0;
         i=0;
         while (index < sellSize)
