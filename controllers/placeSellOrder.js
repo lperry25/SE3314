@@ -19,6 +19,7 @@ StockApp.PlaceSellOrderController = Ember.Controller.extend({
                 return 0;
             }
             buyOrders.sort(compareBuy);
+            buyOrders.reverse();
 
             for (var i = 0; i < buyOrders.length; i++) {
                 // transaction if bidder willing to pay more than or as much as selling price
