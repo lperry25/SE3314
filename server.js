@@ -18,36 +18,36 @@ var buyOrderSchema = mongoose.Schema({
     timeStamp: Date,
     size: Number,
     price: Number,
-    company: company
+    company: {type: mongoose.Schema.Types.ObjectId, ref: 'companySchema'}
 });
 
 var saleOrderSchema = mongoose.Schema({
     timeStamp: Date,
     size: Number,
     price: Number,
-    company: company
+    company: {type: mongoose.Schema.Types.ObjectId, ref: 'companySchema'}
 });
 
 var companySchema = mongoose.Schema({
     name: String,
     symbolURL: String,
     openPrice: String,
-    currentPrice: Number,
-    changeValue: Number,
-    changeIcon: String,
-    changePercentage: Number,
-    changeDirection: Number,
-    shareVolume: Number,
-    buyOrders: buyOrder[],
-    saleOrders: sellOrder[],
-    transactions: transaction[]
+    currentPrice: {type: Number, default: 0.0},
+    changeValue: {type: Number, default: 0.0},
+    changeIcon: {type: String, default:'images/noChange.png'},
+    changePercentage: {type: Number, default: 0.0},
+    changeDirection: {type: Number, default: 0.0},
+    shareVolume: {type: Number, default: 0.0},
+    buyOrders: [buyOrderSchema],
+    saleOrders: [saleOrderSchema],
+    transactions: [transactionSchema]
 });
 
 var transactionSchema = mongoose.Schema({
     timeStamp: Date,
     size: Number,
     price: Number,
-    company: company
+    company: {type: mongoose.Schema.Types.ObjectId, ref: 'companySchema'}
 });
 
 var BuyOrders = mongoose.model('BuyOrders', buyOrderSchema);
