@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://danicamcleod:turtles1@ds053419.mongolab.com:53419/stockmarket'); // connect to database
+mongoose.connect('mongodb://localhost/stockmarket');
 
 var app = express();
 
@@ -78,7 +78,18 @@ app.get('/saleOrders', function (request, response) {
 
 app.post('/companies', function (request, response) {
     var company = new Companies({
-        // TO DO
+        name: request.body.company.name,
+        symbolURL: request.body.company.symbolURL,
+        openPrice: request.body.company.openPrice,
+        currentPrice: request.body.company.currentPrice,
+        changeValue: request.body.company.changeValue,
+        changeIcon: request.body.company.changeIcon,
+        changePercentage: request.body.company.changePercentage,
+        changeDirection: request.body.company.changeDirection,
+        shareVolume: request.body.company.shareVolume,
+        buyOrders: request.body.company.buyOrders,
+        saleOrders: request.body.company.saleOrders,
+        transactions: request.body.company.transactions
     });
     company.save(function(error) {
         if (error) response.send(error);
@@ -88,7 +99,10 @@ app.post('/companies', function (request, response) {
 
 app.post('/buyOrders', function (request, response) {
     var buyOrder = new BuyOrders({
-        // TO DO
+        timeStamp: request.body.buyOrder.timeStamp,
+        size: request.body.buyOrder.size,
+        price: request.body.buyOrder.price,
+        company: request.body.buyOrder.company
     });
     buyOrder.save(function(error) {
         if (error) response.send(error);
@@ -98,7 +112,10 @@ app.post('/buyOrders', function (request, response) {
 
 app.post('/saleOrders', function (request, response) {
     var saleOrder = new SaleOrders({
-        // TO DO
+        timeStamp: request.body.saleOrder.timeStamp,
+        size: request.body.saleOrder.size,
+        price: request.body.saleOrder.price,
+        company: request.body.saleOrder.company
     });
     saleOrder.save(function(error) {
         if (error) response.send(error);
@@ -108,7 +125,10 @@ app.post('/saleOrders', function (request, response) {
 
 app.post('/transactions', function (request, response) {
     var transaction = new Transactions({
-        // TO DO
+        timeStamp: request.body.transaction.timeStamp,
+        size: request.body.transaction.size,
+        price: request.body.transaction.price,
+        company: request.body.transaction.company
     });
     transaction.save(function(error) {
         if (error) response.send(error);
@@ -120,7 +140,19 @@ app.put('/companies/:company_id', function (request, response) {
     Companies.findById(request.params.company_id, function (error, company) {
         if (error) response.send(error);
 
-        // TO DO - update the company info 
+        // update the company info 
+        company.name = request.body.company.name,
+        company.symbolURL = request.body.company.symbolURL,
+        company.openPrice = request.body.company.openPrice,
+        company.currentPrice = request.body.company.currentPrice,
+        company.changeValue = request.body.company.changeValue,
+        company.changeIcon = request.body.company.changeIcon,
+        company.changePercentage = request.body.company.changePercentage,
+        company.changeDirection = request.body.company.changeDirection,
+        company.shareVolume = request.body.company.shareVolume,
+        company.buyOrders = request.body.company.buyOrders,
+        company.saleOrders = request.body.company.saleOrders,
+        company.transactions = request.body.company.transactions
 
         // save the company
         company.save(function (error) {
