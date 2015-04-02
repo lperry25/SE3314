@@ -102,39 +102,37 @@ app.post('/companies', function (request, response) {
     });
 });
 
-//buy and sell orders don't need to be in a semaphore because many orders can be placed at once
-//the orders just may not result in the transaction if they are not the first one
-app.post('/buyOrders', function (request, response) {
-    var buyOrder = new BuyOrders({
-        timeStamp: request.body.buyOrder.timeStamp,
-        size: request.body.buyOrder.size,
-        price: request.body.buyOrder.price,
-        company: request.body.buyOrder.company
-    });
-    buyOrder.save(function(error) {
-        if (error) response.send(error);
-        response.status(201).json({buyOrders: buyOrder});
-    });
-});
-
-app.post('/saleOrders', function (request, response) {
-    var saleOrder = new SaleOrders({
-        timeStamp: request.body.saleOrder.timeStamp,
-        size: request.body.saleOrder.size,
-        price: request.body.saleOrder.price,
-        company: request.body.saleOrder.company
-    });
-    saleOrder.save(function(error) {
-        if (error) response.send(error);
-        response.status(201).json({saleOrders: saleOrder});
-    });
-});
-//the four following actions must be synchronized
+//the six following actions must be synchronized
 //if a transaction begins on one company, the same company can not attempt a new transaction
 //the transaction will occur, then updating the company, and then deleting buy and sell orders
 //if a company with the same id attempts a transaction, the transaction will not go through
 var sem = require('semaphore')(1);
 sem.take(function(){
+    app.post('/buyOrders', function (request, response) {
+        var buyOrder = new BuyOrders({
+            timeStamp: request.body.buyOrder.timeStamp,
+            size: request.body.buyOrder.size,
+            price: request.body.buyOrder.price,
+            company: request.body.buyOrder.company
+        });
+        buyOrder.save(function(error) {
+            if (error) response.send(error);
+            response.status(201).json({buyOrders: buyOrder});
+        });
+    });
+
+    app.post('/saleOrders', function (request, response) {
+        var saleOrder = new SaleOrders({
+            timeStamp: request.body.saleOrder.timeStamp,
+            size: request.body.saleOrder.size,
+            price: request.body.saleOrder.price,
+            company: request.body.saleOrder.company
+        });
+        saleOrder.save(function(error) {
+            if (error) response.send(error);
+            response.status(201).json({saleOrders: saleOrder});
+        });
+    });
     app.post('/transactions', function (request, response) {
         var transaction = new Transactions({
             timeStamp: request.body.transaction.timeStamp,
