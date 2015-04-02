@@ -17,35 +17,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-//code for the lock
-var locks;
-// attempt to take out a lock, if the lock exists, then place the callback into the array.
-this.getLock = function( id) {
-
-    if(locks[id] ) {
-        locks[id].push( id );
-        return false;
-    }
-    else {
-        locks[id] = [];
-        return true;
-    }
-};
-
-// call freelock when done
-this.freeLock = function( id ) {
-    async.forEach(locks[id], function(item, callback) {
-        item.apply([id]);
-        callback();
-    }, function(err){
-        if(err) {
-            // do something on error
-        }
-
-        locks[id] = null;
-
-    });
-};
 
 var buyOrderSchema = mongoose.Schema({
     timeStamp: Date,
@@ -88,7 +59,7 @@ var SaleOrders = mongoose.model('SaleOrders', saleOrderSchema);
 var Companies = mongoose.model('Companies', companySchema);
 var Transactions = mongoose.model('Transactions', transactionSchema);
 
-//all the get's can happen outside a lock, because it does not need to be synchronized
+//all the get's can happen outside a semaphore, because it does not need to be synchronized
 app.get('/companies', function (request, response) {
     Companies.find(function (error, companies) {
         if (error) response.send(error);
@@ -131,6 +102,8 @@ app.post('/companies', function (request, response) {
     });
 });
 
+//buy and sell orders don't need to be in a semaphore because many orders can be placed at once
+//the orders just may not result in the transaction if they are not the first one
 app.post('/buyOrders', function (request, response) {
     var buyOrder = new BuyOrders({
         timeStamp: request.body.buyOrder.timeStamp,
@@ -160,7 +133,8 @@ app.post('/saleOrders', function (request, response) {
 //if a transaction begins on one company, the same company can not attempt a new transaction
 //the transaction will occur, then updating the company, and then deleting buy and sell orders
 //if a company with the same id attempts a transaction, the transaction will not go through
-if (getLock(this.id)){
+var sem = require('semaphore')(1);
+sem.take(function(){
     app.post('/transactions', function (request, response) {
         var transaction = new Transactions({
             timeStamp: request.body.transaction.timeStamp,
@@ -207,8 +181,6 @@ if (getLock(this.id)){
             if (error) response.send(err);
             response.status(201).json({buyOrders: BuyOrders});
         });
-        //transaction is over when the orders are deleted, so lock can be freed
-        freeLock(this.id);
     });
 
     app.delete('/saleOrders/:saleOrder_id', function (request, response) {
@@ -218,11 +190,9 @@ if (getLock(this.id)){
             if (error) response.send(err);
             response.status(201).json({saleOrders: SaleOrders});
         });
-        //transaction is over when the orders are deleted, so lock can be freed
-        freelock(this.id);
     });
-}
-
+    sem.leave();
+});
 
 app.listen(3700, function () {
     console.log('Listening on port 3700');
