@@ -2,9 +2,12 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/stockmarket');
-
+//mongoose.connect('mongodb://localhost/stockmarket');
+//using mongoLab, so internet connection is needed
+mongoose.connect('mongodb://lauramperry.12:password93@ds059651.mongolab.com:59651/stockmarket');
+console.log("test");
 var app = express();
+
 
 var logger = require('./logger');
 app.use(logger);
@@ -13,6 +16,36 @@ app.use(logger);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static('public'));
+
+//code for the lock
+var locks;
+// attempt to take out a lock, if the lock exists, then place the callback into the array.
+this.getLock = function( id) {
+
+    if(locks[id] ) {
+        locks[id].push( id );
+        return false;
+    }
+    else {
+        locks[id] = [];
+        return true;
+    }
+};
+
+// call freelock when done
+this.freeLock = function( id ) {
+    async.forEach(locks[id], function(item, callback) {
+        item.apply([id]);
+        callback();
+    }, function(err){
+        if(err) {
+            // do something on error
+        }
+
+        locks[id] = null;
+
+    });
+};
 
 var buyOrderSchema = mongoose.Schema({
     timeStamp: Date,
@@ -55,6 +88,7 @@ var SaleOrders = mongoose.model('SaleOrders', saleOrderSchema);
 var Companies = mongoose.model('Companies', companySchema);
 var Transactions = mongoose.model('Transactions', transactionSchema);
 
+//all the get's can happen outside a lock, because it does not need to be synchronized
 app.get('/companies', function (request, response) {
     Companies.find(function (error, companies) {
         if (error) response.send(error);
@@ -122,66 +156,75 @@ app.post('/saleOrders', function (request, response) {
         response.status(201).json({saleOrders: saleOrder});
     });
 });
-
-app.post('/transactions', function (request, response) {
-    var transaction = new Transactions({
-        timeStamp: request.body.transaction.timeStamp,
-        size: request.body.transaction.size,
-        price: request.body.transaction.price,
-        company: request.body.transaction.company
-    });
-    transaction.save(function(error) {
-        if (error) response.send(error);
-        response.status(201).json({transactions: transaction});
-    });
-});
-
-app.put('/companies/:company_id', function (request, response) {
-    Companies.findById(request.params.company_id, function (error, company) {
-        if (error) response.send(error);
-
-        // update the company info 
-        company.name = request.body.company.name,
-        company.symbolURL = request.body.company.symbolURL,
-        company.openPrice = request.body.company.openPrice,
-        company.currentPrice = request.body.company.currentPrice,
-        company.changeValue = request.body.company.changeValue,
-        company.changeIcon = request.body.company.changeIcon,
-        company.changePercentage = request.body.company.changePercentage,
-        company.changeDirection = request.body.company.changeDirection,
-        company.shareVolume = request.body.company.shareVolume,
-        company.buyOrders = request.body.company.buyOrders,
-        company.saleOrders = request.body.company.saleOrders,
-        company.transactions = request.body.company.transactions
-
-        // save the company
-        company.save(function (error) {
+//the four following actions must be synchronized
+//if a transaction begins on one company, the same company can not attempt a new transaction
+//the transaction will occur, then updating the company, and then deleting buy and sell orders
+//if a company with the same id attempts a transaction, the transaction will not go through
+if (getLock(this.id)){
+    app.post('/transactions', function (request, response) {
+        var transaction = new Transactions({
+            timeStamp: request.body.transaction.timeStamp,
+            size: request.body.transaction.size,
+            price: request.body.transaction.price,
+            company: request.body.transaction.company
+        });
+        transaction.save(function(error) {
             if (error) response.send(error);
-            response.status(201).json({companies: company});
+            response.status(201).json({transactions: transaction});
         });
     });
-});
 
-app.delete('/buyOrders/:buyOrder_id', function (request, response) {
-    BuyOrders.remove({
-        _id: request.params.buyOrder_id
-    }, function(error, buyOrder) {
-        if (error) response.send(err);
-        response.status(201).json({buyOrders: BuyOrders});
+    app.put('/companies/:company_id', function (request, response) {
+        Companies.findById(request.params.company_id, function (error, company) {
+            if (error) response.send(error);
+
+            // update the company info
+            company.name = request.body.company.name,
+                company.symbolURL = request.body.company.symbolURL,
+                company.openPrice = request.body.company.openPrice,
+                company.currentPrice = request.body.company.currentPrice,
+                company.changeValue = request.body.company.changeValue,
+                company.changeIcon = request.body.company.changeIcon,
+                company.changePercentage = request.body.company.changePercentage,
+                company.changeDirection = request.body.company.changeDirection,
+                company.shareVolume = request.body.company.shareVolume,
+                company.buyOrders = request.body.company.buyOrders,
+                company.saleOrders = request.body.company.saleOrders,
+                company.transactions = request.body.company.transactions
+
+            // save the company
+            company.save(function (error) {
+                if (error) response.send(error);
+                response.status(201).json({companies: company});
+            });
+        });
     });
 
-});
-
-app.delete('/saleOrders/:saleOrder_id', function (request, response) {
-    Posts.remove({
-        _id: request.params.saleOrder_id
-    }, function(error, saleOrder) {
-        if (error) response.send(err);
-        response.status(201).json({saleOrders: SaleOrders});
+    app.delete('/buyOrders/:buyOrder_id', function (request, response) {
+        BuyOrders.remove({
+            _id: request.params.buyOrder_id
+        }, function(error, buyOrder) {
+            if (error) response.send(err);
+            response.status(201).json({buyOrders: BuyOrders});
+        });
+        //transaction is over when the orders are deleted, so lock can be freed
+        freeLock(this.id);
     });
 
-});
+    app.delete('/saleOrders/:saleOrder_id', function (request, response) {
+        Posts.remove({
+            _id: request.params.saleOrder_id
+        }, function(error, saleOrder) {
+            if (error) response.send(err);
+            response.status(201).json({saleOrders: SaleOrders});
+        });
+        //transaction is over when the orders are deleted, so lock can be freed
+        freelock(this.id);
+    });
+}
+
 
 app.listen(3700, function () {
     console.log('Listening on port 3700');
 });
+
